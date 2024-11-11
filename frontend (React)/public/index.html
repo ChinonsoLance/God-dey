@@ -1,0 +1,371 @@
+  <!DOCTYPE html>
+<html lang="en">
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Create and Sell your own NFT and other Digital assets with pictorallab. Your No.1 Digital Marketplace.">
+    <meta name="keywords" content="pictorallab, NFT, marketplace,  digital assets, blockchain, decentralized, Ethereum, smart contracts, cryptocurrency">
+    <title>pictorallab NFT Marketplace</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Sora:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-GLhlTQ8iowZMRcvz3UU78/AA+9IJhZ3wn5HHGBiab6Svckyd4E+bp3Y6P6L4N2f" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap-grid.min.css" integrity="sha512-Aa+z1qgIG+Hv4H2W3EMl3btnnwTQRA47ZiSecYSkWavHUkBF2aPOIIvlvjLCsjapW1IfsGrEO3FU693ReouVTA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" integrity="sha512-rqQltXRuHxtPWhktpAZxLHUVJ3Eombn3hvk9PHjV/N5DMUYnzKPC1i3ub0mEXgFzsaZNeJcoE0YHq0j/GFsdGg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap-utilities.min.css" integrity="sha512-V+uwL2kLYpr/Twxnl57MTxJf4rv3dqOmsTOtJLTq1TT1aWXinSsp89jLEafPt41OXc+Xs93rDtLR1d4Nnt5GxQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+<style>  
+    /* Center the svg and set the background to white */
+    #container-loader {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #000000;
+      font-family: "Montserrat", sans-serif;
+      position:fixed;
+      top:0;
+      width:100vw;
+      z-index:5000;
+    }
+    
+    /* Make the svg a white circle and give it the default spinning animation */
+    svg {
+      background-color: #000000;
+      border-radius: 50%;
+      animation: spin 3s ease infinite alternate;
+    }
+    
+    /*Give each dot a radius of 20*/
+    .shape {
+      r: 20;
+    }
+    
+    /*Give each dot its positioning and set the default animation and color for each */
+    .shape:nth-child(1) {
+      cy: 50;
+      cx: 50;
+      fill: #fcb808;
+      animation: movein 3s ease infinite alternate;
+    }
+    .shape:nth-child(2) {
+      cy: 50;
+      cx: 150;
+      fill: #fcb808;
+      animation: movein 3s ease infinite alternate;
+    }
+    .shape:nth-child(3) {
+      cy: 150;
+      cx: 50;
+      fill: #f9075e;
+      animation: movein 3s ease infinite alternate;
+    }
+    .shape:nth-child(4) {
+      cy: 150;
+      cx: 150;
+      fill: #f9075e;
+      animation: movein 3s ease infinite alternate;
+    }
+    
+    /* Put the two interface options at the bottom of the screen */
+    .control-panel {
+      position: fixed;
+      bottom: 5px;
+      display: flex;
+      align-items: center;
+    }
+    
+    /* Set color and placement of labels */
+    .switch-label {
+      display: inline-block;
+      color: #000000;
+      margin: 5px;
+    }
+    
+    /* Set area of switches */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 25px;
+    }
+    
+    /* Get rid of checkbox defaults */
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    /* Create the slider */
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ffdd22;
+      -webkit-transition: 0.4s;
+      transition: 0.4s;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 19px;
+      width: 19px;
+      left: 3px;
+      bottom: 3px;
+      background-color: #000000;
+      -webkit-transition: 0.4s;
+      transition: 0.4s;
+    }
+    
+    /* Change color on checked */
+    input:checked + .slider {
+      background-color: #c20f00;
+    }
+    
+    /* Set second color change */
+    .movement input:checked + .slider {
+      background-color: #2374c6;
+    }
+    
+    /* Set the focus to same color as when checked*/
+    input:focus + .slider {
+      box-shadow: 0 0 3px #c20f00;
+    }
+    .movement input:focus + .slider {
+      box-shadow: 0 0 3px #2374c6;
+    }
+    
+    /* Actually move the slider when checked*/
+    input:checked + .slider:before {
+      -webkit-transform: translateX(25px);
+      -ms-transform: translateX(25px);
+      transform: translateX(25px);
+    }
+    
+    /* Round the sliders */
+    .slider.round {
+      border-radius: 34px;
+    }
+    .slider.round:before {
+      border-radius: 50%;
+    }
+    
+    /*Spin the svg so all the dots spin*/
+    @keyframes spin {
+      to {
+        transform: rotate(1turn);
+      }
+    }
+    
+    /* Move all the dots toward the center */
+    @keyframes movein {
+      to {
+        cy: 100;
+        cx: 100;
+      }
+    }
+    
+    /* Set a bouncy ball type movement for the dots */
+    @keyframes moveup {
+      to {
+        cy: 20;
+      }
+    }
+
+    .whatsapp-button {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background-color: #25D366; /* WhatsApp brand color */
+      color: #fff;
+      border-radius: 50%;
+      padding: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width:40px;
+      height:44px;
+      z-index: 1000;
+    }
+
+    .whatsapp-button:hover {
+      background-color: #128C7E; /* Darker color on hover */
+    }
+  </style>    
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <div id="container-loader">
+      <svg width="200" height="200" id="svg">
+        <circle id="dot1" class="shape" />
+        <circle id="dot2" class="shape" />
+        <circle id="dot3" class="shape" />
+        <circle id="dot4" class="shape" />
+      </svg>      
+    </div>
+    <!-- <a href="https://wa.me/+16183867699" target="_blank" class="whatsapp-button">
+      <i class="fab fa-whatsapp"></i>
+    </a> -->
+  </body>
+<script>
+
+  function darkFunction() {
+    //Change from light mode to dark mode
+  
+    //Define variables
+    const checkBox = document.getElementById("myCheck");
+    const dot = document.getElementById("dot4");
+    const body = document.getElementsByTagName("BODY")[0];
+    const svg = document.getElementById("svg");
+    const label = document.getElementById("switchLabel");
+    const label2 = document.getElementById("switchLabel2");
+  
+    //If user wants dark mode
+    if (checkBox.checked == true) {
+      dot.style.fill = "#ffffff"; //Dot turns white
+      body.style.backgroundColor = "#000000"; //Background turns black
+      svg.style.backgroundColor = "#000000"; //svg background turns black
+      //The labels turn white
+      label.style.color = "#ffffff";
+      label2.style.color = "#ffffff";
+  
+      //If they want light mode/default
+    } else {
+      dot.style.fill = "#000000"; //Dot is black
+      body.style.backgroundColor = "#ffffff"; //Background is white
+      svg.style.backgroundColor = "#ffffff"; //svg background is white
+      //Labels are white
+      label.style.color = "#000000";
+      label2.style.color = "#000000";
+    }
+  }
+  function movementFunction() {
+    //Change the way the dots move from circular to linear
+  
+    //Define variables
+    const checkBox = document.getElementById("myCheck2");
+    const dot1 = document.getElementById("dot1");
+    const dot2 = document.getElementById("dot2");
+    const dot3 = document.getElementById("dot3");
+    const dot4 = document.getElementById("dot4");
+    const body = document.getElementsByTagName("BODY")[0];
+    const svg = document.getElementById("svg");
+    const label = document.getElementById("switchLabel");
+    const label2 = document.getElementById("switchLabel2");
+  
+    //If user wants linear
+    if (checkBox.checked == true) {
+      //Change each dots x and y values and their animation
+      dot1.style.cy = 150;
+      dot1.style.cx = 40;
+      dot1.style.animation = "moveup 2s ease infinite alternate";
+      dot2.style.cy = 150;
+      dot2.style.cx = 80;
+      dot2.style.animation = "moveup 2s ease 0.5s infinite alternate";
+      dot3.style.cy = 150;
+      dot3.style.cx = 120;
+      dot3.style.animation = "moveup 2s ease 1s infinite alternate";
+      dot4.style.cy = 150;
+      dot4.style.cx = 160;
+      dot4.style.animation = "moveup 2s ease 1.5s infinite alternate";
+      svg.style.animation = "none"; //Turn off svg spinning animation
+      svg.style.borderRadius = "0%"; //Make the svg back into a square
+  
+      //Spinning animation/default
+    } else {
+      //Set each dot to center of a quadrant of the square and reset their animations
+      dot1.style.cy = 50;
+      dot1.style.cx = 50;
+      dot2.style.cy = 50;
+      dot2.style.cx = 150;
+      dot3.style.cy = 150;
+      dot3.style.cx = 50;
+      dot4.style.cy = 150;
+      dot4.style.cx = 150;
+      dot1.style.animation = "movein 5s ease infinite alternate";
+      dot2.style.animation = "movein 5s ease infinite alternate";
+      dot3.style.animation = "movein 5s ease infinite alternate";
+      dot4.style.animation = "movein 5s ease infinite alternate";
+      svg.style.animation = "spin 5s ease infinite alternate"; //Reset svg spin animation
+      svg.style.borderRadius = "50%"; //Make svg a circle again
+    }
+  }
+</script>  
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      // Function to show the loading screen
+      function showLoadingScreen() {
+        document.getElementById("container-loader").style.display = "flex";
+      }
+
+      // Function to hide the loading screen
+      function hideLoadingScreen() {
+        document.getElementById("container-loader").style.display = "none";
+      }
+
+      // Add event listeners to all links
+      const links = document.querySelectorAll("a");
+      links.forEach((link) => {
+        link.addEventListener("click", showLoadingScreen);
+      });
+
+      // Intercept and show the loading screen for GET and POST requests
+      const originalSend = XMLHttpRequest.prototype.send;
+      XMLHttpRequest.prototype.send = function () {
+        showLoadingScreen();
+        const onReadyStateChange = () => {
+          if (this.readyState === 4) {
+            hideLoadingScreen();
+          }
+        };
+        this.addEventListener("readystatechange", onReadyStateChange);
+        return originalSend.apply(this, arguments);
+      };
+    });
+</script>
+
+<!-- <script src="//code.jivosite.com/widget/lNCJYZl3H1" async></script> -->
+
+<!-- <script src="//code.jivosite.com/widget/mqwWZOZqDd" async></script> -->
+
+ <!-- Start of LiveChat (www.livechat.com) code --> -->
+ <!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+  var _smartsupp = _smartsupp || {};
+  _smartsupp.key = '801845bca2c6fd8da96abfa6110cba983de6182e';
+  window.smartsupp||(function(d) {
+    var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+    s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+    c.type='text/javascript';c.charset='utf-8';c.async=true;
+    c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+  })(document);
+  </script>
+  <noscript> Powered by <a href=“https://www.smartsupp.com” target=“_blank”>Smartsupp</a></noscript>
+<!-- End of LiveChat code(pictorallab support) -->
+
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script type="text/javascript">
+function googleTranslateElementInit() {
+new google.translate.TranslateElement({pageLanguage: 'pl'}, 'google_translate_element');
+}
+</script>
+
+<!-- Start of LiveChat (www.livechat.com) code -->
+<!-- <script>
+  window.__lc = window.__lc || {};
+  window.__lc.license = 18692175;
+  window.__lc.integration_name = "manual_onboarding";
+  window.__lc.product_name = "livechat";
+  ;(function(n,t,c){function i(n){return e._h?e._h.apply(null,n):e._q.push(n)}var e={_q:[],_h:null,_v:"2.0",on:function(){i(["on",c.call(arguments)])},once:function(){i(["once",c.call(arguments)])},off:function(){i(["off",c.call(arguments)])},get:function(){if(!e._h)throw new Error("[LiveChatWidget] You can't use getters before load.");return i(["get",c.call(arguments)])},call:function(){i(["call",c.call(arguments)])},init:function(){var n=t.createElement("script");n.async=!0,n.type="text/javascript",n.src="https://cdn.livechatinc.com/tracking.js",t.head.appendChild(n)}};!n.__lc.asyncInit&&e.init(),n.LiveChatWidget=n.LiveChatWidget||e}(window,document,[].slice))
+</script>
+<noscript><a href="https://www.livechat.com/chat-with/18692175/" rel="nofollow">Chat with us</a>, powered by <a href="https://www.livechat.com/?welcome" rel="noopener nofollow" target="_blank">LiveChat</a></noscript>
+End of LiveChat code  nft props code -->
+
+</html>
